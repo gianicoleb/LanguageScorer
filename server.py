@@ -7,15 +7,24 @@ app = Flask(__name__)
 project_directory = os.path.dirname(os.path.abspath(__file__))
 results_file_path = os.path.join(project_directory, 'results.txt')
 
-# Debug print to check the path
+# Debug print to confirm the path where results will be saved
 print(f"Saving results to: {results_file_path}")
 
 @app.route('/save-result', methods=['POST'])
 def save_result():
     data = request.json
-    with open(results_file_path, 'a') as f:
-        f.write(f"Name: {data['name']}, Score: {data['score']}, Incorrect: {data['incorrect']}\n")
-    return jsonify({"status": "success"})
+    
+    # Ensure data contains the expected keys
+    if 'name' in data and 'score' in data and 'incorrect' in data:
+        # Save the result to the results.txt file
+        with open(results_file_path, 'a') as f:
+            f.write(f"Name: {data['name']}, Score: {data['score']}, Incorrect: {', '.join(data['incorrect'])}\n")
+        
+        # Return a success response
+        return jsonify({"status": "success"}), 200
+    else:
+        # Return an error response if expected data is missing
+        return jsonify({"status": "error", "message": "Invalid data format"}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)

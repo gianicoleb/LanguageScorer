@@ -171,11 +171,9 @@
                 score: score.toFixed(2),
                 incorrect: incorrect
             };
-            
-            // Replace with your Google Apps Script Web App URL
-            const url = 
-'https://script.google.com/macros/s/AKfycbyAIfQgivOK7fita9osiN6lecSxQXqW4G_COWOMhmlbxj3v69dQhjMNf9--A6Ooq6yaUA/exec';
-            
+        
+            const url = 'https://cors-anywhere.herokuapp.com/YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+        
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -196,6 +194,7 @@
                 alert('There was an error saving your results.');
             });
         }
+
     </script>
 </body>
 </html>

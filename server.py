@@ -7,6 +7,9 @@ app = Flask(__name__)
 project_directory = os.path.dirname(os.path.abspath(__file__))
 results_file_path = os.path.join(project_directory, 'results.txt')
 
+# Debug print to check the path
+print(f"Saving results to: {results_file_path}")
+
 @app.route('/save-result', methods=['POST'])
 def save_result():
     data = request.json

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,11 +50,19 @@
 
     <script>
         const french = {
-            "comme": "as",
-            "je": "I",
-            "son": "his",
-            "que": "that",
-            "il": "he",
+                  "comme": "as",
+                  "je": "I",
+                  "son": "his",
+                  "que": "that",
+                  "il": "he",
+                  "était": "was",
+                  "pour": "for",
+                  "sur": "on",
+                  "sont": "are",
+                  "avec": "with",
+                  "ils": "they",
+                  "être": "be",
+            
             // add all other words here...
         };
 
@@ -159,28 +168,12 @@
         }
 
         function saveResults() {
-            const data = {
-                name: userName,
-                score: score.toFixed(2),
-                incorrect: incorrect.join(', ')
-            };
-
-            fetch('/save-result', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('Success:', result);
-                alert('Results saved successfully!');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error saving your results.');
-            });
+            const data = `Name: ${userName}\nFinal Score: ${score.toFixed(2)}%\nIncorrect Words: ${incorrect.join(', ')}\n\n`;
+            const blob = new Blob([data], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${userName}_quiz_results.txt`;
+            a.click();
         }
     </script>
 </body>

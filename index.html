@@ -1,55 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Language Learning Quiz</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      text-align: center;
-    }
-
-    #question {
-      margin-top: 20px;
-    }
-
-    button {
-      margin: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        #question {
+            margin-top: 20px;
+        }
+        button {
+            margin: 10px;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Language Learning Quiz</h1>
-    <div>
-      <label for="language">Select Language: </label>
-      <select id="language">
-        <option value="french">French</option>
-        <option value="spanish">Spanish</option>
-        <option value="german">German</option>
-      </select>
-      <button onclick="startQuiz()">Start Quiz</button>
+    <div class="container">
+        <h1>Language Learning Quiz</h1>
+        <div id="user-form">
+            <label for="name">Enter your name: </label>
+            <input type="text" id="name" required>
+            <br><br>
+            <label for="language">Select Language: </label>
+            <select id="language">
+                <option value="french">French</option>
+                <option value="spanish">Spanish</option>
+                <option value="german">German</option>
+            </select>
+            <br><br>
+            <button onclick="startQuiz()">Start Quiz</button>
+        </div>
+        <div id="quiz" style="display:none;">
+            <p id="question"></p>
+            <button onclick="submitAnswer('y')">Yes</button>
+            <button onclick="submitAnswer('n')">No</button>
+            <button onclick="goBack()">Back</button>
+            <p id="score"></p>
+        </div>
     </div>
-    <div id="quiz" style="display:none;">
-      <p id="question"></p>
-      <button onclick="submitAnswer('y')">Yes</button>
-      <button onclick="submitAnswer('n')">No</button>
-      <button onclick="goBack()">Back</button>
-      <p id="score"></p>
-    </div>
-  </div>
 
-  <script>
-    const french = {
+    <script>
+       
+
+
+
+ const french = {
       "comme": "as",
       "je": "I",
       "son": "his",
@@ -1053,94 +1056,115 @@
 
     };
 
-    const spanish = {
+        const spanish = {
+            "como": "as",
+            "yo": "I",
+            // add all other words here...
+        };
 
-    };
+        const german = {
+            "wie": "as",
+            "ich": "I",
+            // add all other words here...
+        };
 
-    const german = {
+        let words = {};
+        let incorrect = [];
+        let correctcount = 0;
+        let count = 0;
+        let score = 0;
+        let answers = [];
+        let currentIndex = 0;
+        let userName = "";
 
-    };
+        function startQuiz() {
+            userName = document.getElementById('name').value.trim();
+            const language = document.getElementById('language').value;
+            if (userName === "") {
+                alert("Please enter your name.");
+                return;
+            }
 
-    let words = {};
-    let incorrect = [];
-    let correctcount = 0;
-    let count = 0;
-    let score = 0;
-    let answers = [];
-    let currentIndex = 0;
+            if (language === 'french') {
+                words = french;
+            } else if (language === 'spanish') {
+                words = spanish;
+            } else if (language === 'german') {
+                words = german;
+            } else {
+                alert("Invalid language selection.");
+                return;
+            }
 
-    function startQuiz() {
-      const language = document.getElementById('language').value;
-      if (language === 'french') {
-        words = french;
-      } else if (language === 'spanish') {
-        words = spanish;
-      } else if (language === 'german') {
-        words = german;
-      } else {
-        alert("Invalid language selection.");
-        return;
-      }
-
-      document.getElementById('quiz').style.display = 'block';
-      showNextWord();
-    }
-
-    function showNextWord() {
-      const keys = Object.keys(words);
-      if (currentIndex < keys.length) {
-        document.getElementById('question').textContent = `Word ${currentIndex + 1}: Do you know this word: ${keys[currentIndex]}?`;
-      } else {
-        endQuiz();
-      }
-    }
-
-    function submitAnswer(answer) {
-      const keys = Object.keys(words);
-      if (answer === 'y') {
-        correctcount++;
-        answers.push('y');
-      } else if (answer === 'n') {
-        incorrect.push(keys[currentIndex]);
-        answers.push('n');
-      }
-      count++;
-      currentIndex++;
-      score = (correctcount / count) * 100;
-      document.getElementById('score').textContent = `Current score: ${score.toFixed(2)}%`;
-
-      if (count > 10 && score <= 75) {
-        alert(`COMPLETE. 75% at word ${currentIndex + 1}`);
-        endQuiz();
-      } else {
-        showNextWord();
-      }
-    }
-
-    function goBack() {
-      if (currentIndex > 0) {
-        currentIndex--;
-        const lastAnswer = answers.pop();
-
-        if (lastAnswer === 'n' && incorrect.length > 0) {
-          incorrect.pop();
-        } else if (lastAnswer === 'y') {
-          correctcount--;
+            document.getElementById('user-form').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            showNextWord();
         }
 
-        count--;
-        score = (correctcount / count) * 100;
-        document.getElementById('score').textContent = `Current score: ${score.toFixed(2)}%`;
+        function showNextWord() {
+            const keys = Object.keys(words);
+            if (currentIndex < keys.length) {
+                document.getElementById('question').textContent = `Word ${currentIndex + 1}: Do you know this word: ${keys[currentIndex]}?`;
+            } else {
+                endQuiz();
+            }
+        }
 
-        showNextWord();
-      }
-    }
+        function submitAnswer(answer) {
+            const keys = Object.keys(words);
+            if (answer === 'y') {
+                correctcount++;
+                answers.push('y');
+            } else if (answer === 'n') {
+                incorrect.push(keys[currentIndex]);
+                answers.push('n');
+            }
+            count++;
+            currentIndex++;
+            score = (correctcount / count) * 100;
+            document.getElementById('score').textContent = `Current score: ${score.toFixed(2)}%`;
 
-    function endQuiz() {
-      document.getElementById('question').textContent = `Final score: ${score.toFixed(2)}%`;
-      document.getElementById('score').textContent = `Incorrect words: ${incorrect.join(', ')}`;
-    }
-  </script>
+            if (count > 10 && score <= 75) {
+                alert(`COMPLETE. 75% at word ${currentIndex + 1}`);
+                endQuiz();
+            } else {
+                showNextWord();
+            }
+        }
+
+        function goBack() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                const lastAnswer = answers.pop();
+
+                if (lastAnswer === 'n' && incorrect.length > 0) {
+                    incorrect.pop();
+                } else if (lastAnswer === 'y') {
+                    correctcount--;
+                }
+
+                count--;
+                score = (correctcount / count) * 100;
+                document.getElementById('score').textContent = `Current score: ${score.toFixed(2)}%`;
+
+                showNextWord();
+            }
+        }
+
+        function endQuiz() {
+            document.getElementById('question').textContent = `Final score: ${score.toFixed(2)}%`;
+            document.getElementById('score').textContent = `Incorrect words: ${incorrect.join(', ')}`;
+            saveResults();
+        }
+
+        function saveResults() {
+            const data = `Name: ${userName}\nFinal Score: ${score.toFixed(2)}%\nIncorrect Words: ${incorrect.join(', ')}\n\n`;
+            const blob = new Blob([data], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${userName}_quiz_results.txt`;
+            a.click();
+        }
+    </script>
 </body>
-
 </html>

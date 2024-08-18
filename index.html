@@ -168,13 +168,33 @@
         }
 
         function saveResults() {
-            const data = `Name: ${userName}\nFinal Score: ${score.toFixed(2)}%\nIncorrect Words: ${incorrect.join(', ')}\n\n`;
-            const blob = new Blob([data], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `${userName}_quiz_results.txt`;
-            a.click();
+            const data = {
+                name: userName,
+                score: score.toFixed(2),
+                incorrect: incorrect
+            };
+        
+            fetch('/save-result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.status === 'success') {
+                    alert('Results saved successfully.');
+                } else {
+                    alert('There was an error saving your results.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('There was an error saving your results.');
+            });
         }
+
     </script>
 </body>
 </html>

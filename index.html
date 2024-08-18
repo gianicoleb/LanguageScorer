@@ -167,18 +167,21 @@
 
         function saveResults() {
             const data = {
-                name: userName,
+                userId: userName,
                 score: score.toFixed(2),
                 incorrect: incorrect
             };
             
-            // Ensure the correct server URL
-            fetch('http://localhost:5000/save-result', {
+            // Replace with your Google Apps Script Web App URL
+            const url = 
+'https://script.google.com/macros/s/AKfycbzsNV6dM2AZQmOaraUsRxel50Pk7O-vpB8bz9-mV8B9M8MGlLiPkJVjzQszsA0wAKSN/exec';
+            
+            fetch(url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(data)
             })
             .then(response => response.json())
             .then(result => {

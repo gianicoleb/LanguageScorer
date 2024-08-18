@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,32 +49,31 @@
 
     <script>
         const french = {
-                  "comme": "as",
-                  "je": "I",
-                  "son": "his",
-                  "que": "that",
-                  "il": "he",
-                  "était": "was",
-                  "pour": "for",
-                  "sur": "on",
-                  "sont": "are",
-                  "avec": "with",
-                  "ils": "they",
-                  "être": "be",
-            
-            // add all other words here...
+            "comme": "as",
+            "je": "I",
+            "son": "his",
+            "que": "that",
+            "il": "he",
+            "était": "was",
+            "pour": "for",
+            "sur": "on",
+            "sont": "are",
+            "avec": "with",
+            "ils": "they",
+            "être": "be",
+            // Add more words here...
         };
 
         const spanish = {
             "como": "as",
             "yo": "I",
-            // add all other words here...
+            // Add more words here...
         };
 
         const german = {
             "wie": "as",
             "ich": "I",
-            // add all other words here...
+            // Add more words here...
         };
 
         let words = {};
@@ -173,8 +171,9 @@
                 score: score.toFixed(2),
                 incorrect: incorrect
             };
-        
-            fetch('/save-result', {
+            
+            // Ensure the correct server URL
+            fetch('http://localhost:5000/save-result', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -194,7 +193,6 @@
                 alert('There was an error saving your results.');
             });
         }
-
     </script>
 </body>
 </html>
